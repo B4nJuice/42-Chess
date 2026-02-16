@@ -57,20 +57,29 @@ class Board():
         return None
 
     def get_pawn(self, pos: str) -> AbstractPawn | None:
-        x: int = int(pos[0], 16) - 10
-        y: int = int(pos[1]) - 1
-
+        x, y = self.pos_to_coords(pos)
         return self.board[y][x]
 
-    def move(self, pos1, pos2) -> None:
-        x1: int = int(pos1[0], 16) - 10
-        y1: int = int(pos1[1]) - 1
+    def move(self, color: PawnColor, pos1: str, pos2: str) -> bool:
+        if not self.get_pawn(pos1) or self.get_pawn(pos1).color != color:
+            return False
 
-        x2: int = int(pos2[0], 16) - 10
-        y2: int = int(pos2[1]) - 1
+        x1, y1 = self.pos_to_coords(pos1)
+        x2, y2 = self.pos_to_coords(pos2)
+
+        if not self.get_pawn(pos1).is_valid_move(self, pos1, pos2):
+            return False
 
         self.board[y2][x2] = self.board[y1][x1]
         self.board[y1][x1] = None
+
+        return True
+
+    @staticmethod
+    def pos_to_coords(pos: str) -> tuple[int, int]:
+        x: int = ord(pos[0]) - ord("a")
+        y: int = int(pos[1]) - 1
+        return (x, y)
 
 
 if __name__ == "__main__":
@@ -78,5 +87,7 @@ if __name__ == "__main__":
     with open("board.config", "r") as config:
         board.setup_board(config)
     print("\n".join(board.get_ascii_board()))
-    board.move("e2", "e4")
+
+    print()
+    print(board.move(PawnColor.BLACK, "e2", "e4"))
     print("\n".join(board.get_ascii_board()))

@@ -18,3 +18,6 @@ class AbstractPawn(ABC):
     @abstractmethod
     def get_ascii(self) -> str:
         pass
+
+    def is_valid_move(self, board, pos1: str, pos2: str) -> bool:
+        pass
