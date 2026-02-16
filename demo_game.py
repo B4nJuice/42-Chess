@@ -20,14 +20,14 @@ def main() -> None:
 
     # initial config: rank1 at top, rank8 at bottom
     cfg = "\n".join([
-        "rhbqkbhr",  # rank1 - black major
-        "pppppppp",  # rank2 - black pawns
+        "RHBQKBHR",  # rank1 - white major
+        "PPPPPPPP",  # rank2 - white pawns
         "........",  # rank3
         "........",  # rank4
         "........",  # rank5
         "........",  # rank6
-        "PPPPPPPP",  # rank7 - white pawns
-        "RHBQKBHR",  # rank8 - white major
+        "pppppppp",  # rank7 - black pawns
+        "rhbqkbhr",  # rank8 - black major
     ])
 
     board.setup_board(StringIO(cfg))
@@ -41,20 +41,20 @@ def main() -> None:
     show("Initial position:")
 
     moves = [
-        (PawnColor.WHITE, "e7", "e5"),
-        (PawnColor.BLACK, "e2", "e4"),
-        (PawnColor.WHITE, "g8", "f6"),
-        (PawnColor.BLACK, "b1", "c3"),
-        (PawnColor.WHITE, "f8", "c5"),
-        (PawnColor.BLACK, "f1", "c4"),
-        (PawnColor.WHITE, "b8", "c6"),
-        (PawnColor.BLACK, "g1", "f3"),
-        (PawnColor.WHITE, "a7", "a6"),
-        (PawnColor.BLACK, "a2", "a3"),
-        (PawnColor.WHITE, "h8", "g8"),
-        (PawnColor.BLACK, "h1", "g1"),
-        (PawnColor.WHITE, "d8", "e7"),
-        (PawnColor.BLACK, "d1", "e2"),
+        (PawnColor.BLACK, "e7", "e5"),
+        (PawnColor.WHITE, "e2", "e4"),
+        (PawnColor.BLACK, "g8", "f6"),
+        (PawnColor.WHITE, "b1", "c3"),
+        (PawnColor.BLACK, "f8", "c5"),
+        (PawnColor.WHITE, "f1", "c4"),
+        (PawnColor.BLACK, "b8", "c6"),
+        (PawnColor.WHITE, "g1", "f3"),
+        (PawnColor.BLACK, "a7", "a6"),
+        (PawnColor.WHITE, "a2", "a3"),
+        (PawnColor.BLACK, "h8", "g8"),
+        (PawnColor.WHITE, "h1", "g1"),
+        (PawnColor.BLACK, "d8", "e7"),
+        (PawnColor.WHITE, "d1", "e2"),
     ]
 
     for i, (color, p1, p2) in enumerate(moves, start=1):
