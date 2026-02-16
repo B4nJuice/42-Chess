@@ -1,6 +1,6 @@
-from src.pawns import Pawn
+from src.pawns import AbstractPawn
 
 
 class Board():
     def __init__(self):
-        self.board: list[list[Pawn]]
+        self.board: list[list[AbstractPawn]]
