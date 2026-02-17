@@ -7,7 +7,7 @@ from ..pawns import (AbstractPawn,
                      Queen,
                      Rook)
 from typing import TextIO, Any
-
+from io import StringIO
 
 class Board():
     def __init__(self):
@@ -67,7 +67,21 @@ class Board():
         x1, y1 = self.pos_to_coords(pos1)
         x2, y2 = self.pos_to_coords(pos2)
 
+        if isinstance(self.get_pawn(pos2), King):
+            return False
+
         if not self.get_pawn(pos1).is_valid_move(self, pos1, pos2):
+            return False
+
+        if self.is_checkmate(color):
+            return False
+
+        test_board: Board = Board()
+        test_board.setup_board(StringIO(Board.get_ascii_board()))
+        test_board.board[y2][x2] = self.board[y1][x1]
+        test_board.board[y1][x1] = None
+
+        if test_board.is_in_check(color):
             return False
 
         self.board[y2][x2] = self.board[y1][x1]
@@ -81,7 +95,77 @@ class Board():
         y: int = int(pos[1]) - 1
         return (x, y)
 
+    def is_in_check(self, color: PawnColor) -> bool:
+        """Return True if the king of `color` is under attack."""
+        king_pos: str | None = None
+        for y, row in enumerate(self.board):
+            for x, p in enumerate(row):
+                if p is None:
+                    continue
+                if isinstance(p, King) and p.color == color:
+                    king_pos = f"{'abcdefgh'[x]}{y+1}"
+                    break
+            if king_pos is not None:
+                break
 
+        if king_pos is None:
+            return False
+
+        for y, row in enumerate(self.board):
+            for x, p in enumerate(row):
+                if p is None or p.color == color:
+                    continue
+                src = f"{'abcdefgh'[x]}{y+1}"
+                try:
+                    if p.is_valid_move(self, src, king_pos):
+                        return True
+                except Exception:
+                    continue
+
+        return False
+
+    def is_checkmate(self, color: PawnColor) -> bool:
+        """Return True if `color` is checkmated (in check and no escape)."""
+        if not self.is_in_check(color):
+            return False
+
+        letters = 'abcdefgh'
+
+        for y, row in enumerate(self.board):
+            for x, p in enumerate(row):
+                if p is None or p.color != color:
+                    continue
+
+                src = f"{letters[x]}{y+1}"
+
+                for ry in range(8):
+                    for rx in range(8):
+                        dst = f"{letters[rx]}{ry+1}"
+                        try:
+                            if not p.is_valid_move(self, src, dst):
+                                continue
+                        except Exception:
+                            continue
+
+                        x1, y1 = self.pos_to_coords(src)
+                        x2, y2 = self.pos_to_coords(dst)
+                        src_piece = self.board[y1][x1]
+                        dst_piece = self.board[y2][x2]
+
+                        self.board[y2][x2] = src_piece
+                        self.board[y1][x1] = None
+
+                        still_in_check = self.is_in_check(color)
+
+                        self.board[y1][x1] = src_piece
+                        self.board[y2][x2] = dst_piece
+
+                        if not still_in_check:
+                            return False
+
+        return True
+
+    
 if __name__ == "__main__":
     board = Board()
     with open("board.config", "r") as config:
