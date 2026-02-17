@@ -60,33 +60,38 @@ class Board():
         x, y = self.pos_to_coords(pos)
         return self.board[y][x]
 
-    def move(self, color: PawnColor, pos1: str, pos2: str) -> bool:
-        if not self.get_pawn(pos1) or self.get_pawn(pos1).color != color:
+    def move(self, color: PawnColor, pos1: str = None, pos2: str = None) -> bool:
+        try:
+            if not pos1 or not pos2:
+                return False
+
+            if not self.get_pawn(pos1) or self.get_pawn(pos1).color != color:
+                return False
+
+            x1, y1 = self.pos_to_coords(pos1)
+            x2, y2 = self.pos_to_coords(pos2)
+        
+            if isinstance(self.get_pawn(pos2), King):
+                return False
+
+            if not self.get_pawn(pos1).is_valid_move(self, pos1, pos2):
+                return False
+
+            if self.is_in_checkmate(color):
+                return False
+
+            test_board: Board = Board()
+            test_board.setup_board(StringIO("\n".join(self.get_ascii_board())))
+            test_board.board[y2][x2] = self.board[y1][x1]
+            test_board.board[y1][x1] = None
+
+            if test_board.is_in_check(color):
+                return False
+
+            self.board[y2][x2] = self.board[y1][x1]
+            self.board[y1][x1] = None
+        except Exception:
             return False
-
-        x1, y1 = self.pos_to_coords(pos1)
-        x2, y2 = self.pos_to_coords(pos2)
-
-        if isinstance(self.get_pawn(pos2), King):
-            return False
-
-        if not self.get_pawn(pos1).is_valid_move(self, pos1, pos2):
-            return False
-
-        if self.is_in_checkmate(color):
-            return False
-
-        test_board: Board = Board()
-        test_board.setup_board(StringIO(Board.get_ascii_board()))
-        test_board.board[y2][x2] = self.board[y1][x1]
-        test_board.board[y1][x1] = None
-
-        if test_board.is_in_check(color):
-            return False
-
-        self.board[y2][x2] = self.board[y1][x1]
-        self.board[y1][x1] = None
-
         return True
 
     @staticmethod
@@ -164,7 +169,6 @@ class Board():
                             return False
 
         return True
-
     
 if __name__ == "__main__":
     board = Board()
