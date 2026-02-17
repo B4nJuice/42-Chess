@@ -73,7 +73,7 @@ class Board():
         if not self.get_pawn(pos1).is_valid_move(self, pos1, pos2):
             return False
 
-        if self.is_checkmate(color):
+        if self.is_in_checkmate(color):
             return False
 
         test_board: Board = Board()
@@ -124,7 +124,7 @@ class Board():
 
         return False
 
-    def is_checkmate(self, color: PawnColor) -> bool:
+    def is_in_checkmate(self, color: PawnColor) -> bool:
         """Return True if `color` is checkmated (in check and no escape)."""
         if not self.is_in_check(color):
             return False
