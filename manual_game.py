@@ -1,6 +1,4 @@
-import sys
-sys.path.insert(0, "./src")
-from src.board.board import Board
+from src.board import Board
 from src.pawns import PawnColor
 from src.player import start_game
 
