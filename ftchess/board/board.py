@@ -101,8 +101,9 @@ class Board():
         self.move_history.append(move_key)
         self.group_move_history = [self.move_history[i:i+4] for i in range(0, len(self.move_history), 4)]
 
-        if len(self.group_move_history) >= 3:
-            self.count_until_tie = 2 - (self.group_move_history[-1] == self.group_move_history[-2]) - (self.group_move_history[-2] == self.group_move_history[-3])
+        if len(self.group_move_history[-4:]) >= 3:
+            if self.group_move_history[-2][:len(self.group_move_history[-1])] == self.group_move_history[-1]:
+                self.count_until_tie = 3 - self.group_move_history[-4:].count(self.group_move_history[-2])
 
         return True
 
