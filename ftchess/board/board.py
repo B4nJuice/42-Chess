@@ -12,6 +12,9 @@ from io import StringIO
 class Board():
     def __init__(self):
         self.board: list[list[AbstractPawn]] = []
+        self.count_until_tie = 3
+        self.move_history: list[str] = []
+        self.group_move_history = []
 
         for y in range(8):
             self.board.append([])
@@ -90,8 +93,17 @@ class Board():
 
             self.board[y2][x2] = self.board[y1][x1]
             self.board[y1][x1] = None
-        except Exception:
+
+        except Exception as e:
             return False
+        
+        move_key = f"{pos1}{pos2}"
+        self.move_history.append(move_key)
+        self.group_move_history = [self.move_history[i:i+4] for i in range(0, len(self.move_history), 4)]
+
+        if len(self.group_move_history) >= 3:
+            self.count_until_tie = 2 - (self.group_move_history[-1] == self.group_move_history[-2]) - (self.group_move_history[-2] == self.group_move_history[-3])
+
         return True
 
     @staticmethod
