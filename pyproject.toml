@@ -1,0 +1,22 @@
+[project]
+name = "ftchess"
+version = "0.0.1"
+authors = [
+  { name="Girard Louis", email="lgirard@student.42lyon.fr" },
+]
+description = "Chess player for Ai versus"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/B4nJuice/42-Chess"
+
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ftchess"]

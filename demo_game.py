@@ -11,7 +11,7 @@ from io import StringIO
 def main() -> None:
     import sys
 
-    sys.path.insert(0, "./src")
+    sys.path.insert(0, "./ftchess")
 
     from src.board.board import Board
     from src.pawns import PawnColor

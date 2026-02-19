@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import sys
 
-sys.path.insert(0, "./src")
+sys.path.insert(0, "./ftchess")
 
 from src.board.board import Board
 from src.pawns import (
