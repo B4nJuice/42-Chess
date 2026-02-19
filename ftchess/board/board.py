@@ -100,6 +100,11 @@ class Board():
         y: int = int(pos[1]) - 1
         return (x, y)
 
+    @staticmethod
+    def coords_to_pos(coords: tuple[int, int]) -> str:
+        x, y = coords
+        return f"{'abcdefgh'[x]}{y+1}"
+
     def is_in_check(self, color: PawnColor) -> bool:
         """Return True if the king of `color` is under attack."""
         king_pos: str | None = None
