@@ -20,7 +20,7 @@ class Board():
 
     def setup_board(self, board: TextIO) -> None:
         for y, line in enumerate(board.readlines()):
-            for x in range(len(line := line.strip())):
+            for x in range(len(line)):
                 pawn: Any = None
 
                 match line[x]:
