@@ -2,6 +2,10 @@ from .abstract_pawn import AbstractPawn, PawnColor
 
 
 class Rook(AbstractPawn):
+    def __init__(self, color: PawnColor) -> None:
+        self.has_moved = False
+        super().__init__(color)
+
     def get_ascii(self) -> str:
         """Return 'R' for white rooks and 'r' for black rooks."""
         return "R" if self.color == PawnColor.WHITE else "r"

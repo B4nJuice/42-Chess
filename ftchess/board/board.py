@@ -64,6 +64,7 @@ class Board():
         return self.board[y][x]
 
     def move(self, color: PawnColor, pos1: str = None, pos2: str = None) -> bool:
+        x2, y2 = 0, 0
         try:
             if not pos1 or not pos2:
                 return False
@@ -91,10 +92,27 @@ class Board():
             if test_board.is_in_check(color):
                 return False
 
-            self.board[y2][x2] = self.board[y1][x1]
-            self.board[y1][x1] = None
+            pawn = self.board[y1][x1]
+
+            if isinstance(pawn, King) and abs(x2 - x1) == 2:
+                direction = 2 if x2 > x1 else -2
+
+                rook_x_start = 7 if direction == 2 else 0
+                rook_x_end = 5 if rook_x_start == 7 else 3
+
+                self.board[y1][x1 + direction] = pawn
+                self.board[y1][x1] = None
+
+                rook = self.board[y1][rook_x_start]
+                self.board[y1][rook_x_start] = None
+                self.board[y1][rook_x_end] = rook
+
+            else:
+                self.board[y2][x2] = pawn
+                self.board[y1][x1] = None
 
         except Exception as e:
+            print(e)
             return False
         
         move_key = f"{pos1}{pos2}"
@@ -104,6 +122,11 @@ class Board():
         if len(self.group_move_history[-4:]) >= 3:
             if self.group_move_history[-2][:len(self.group_move_history[-1])] == self.group_move_history[-1]:
                 self.count_until_tie = 3 - self.group_move_history[-4:].count(self.group_move_history[-2])
+
+        pawn: AbstractPawn = self.get_pawn(self.coords_to_pos((x2, y2)))
+
+        if isinstance(pawn, King) or isinstance(pawn, Rook):
+            pawn.has_moved = True
 
         return True
 
