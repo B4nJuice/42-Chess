@@ -47,7 +47,6 @@ class King(AbstractPawn):
         for step in range(1, 3 if direction == -1 else 2):
             pos2 = new_board.coords_to_pos((x1 + step * direction, y1))
             if not new_board.move(self.color, pos1, pos2):
-                print(pos1, pos2, step * direction)
                 return False
             pos1 = pos2
 

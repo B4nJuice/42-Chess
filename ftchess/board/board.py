@@ -112,7 +112,7 @@ class Board():
                 self.board[y1][x1] = None
 
         except Exception as e:
-            print(e)
+            # print(e)
             return False
         
         move_key = f"{pos1}{pos2}"
