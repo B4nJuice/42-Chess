@@ -31,8 +31,8 @@ def start_game(algo1: Algo, algo2: Algo) -> PawnColor:
             play: tuple[str, str] = algo.play(new_board)
             while not board.move(color, *play):
                 new_board = copy.deepcopy(board)
-                play = algo.play(new_board)
-        
+                play = algo.play(new_board)                
+
             print(f"{color.value} {play}")
 
             checkmate: bool = {

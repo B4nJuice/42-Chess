@@ -108,6 +108,9 @@ class Board():
                 self.board[y1][rook_x_end] = rook
 
             else:
+                last_line: int = 7 if pawn.color == PawnColor.WHITE else 1
+                if isinstance(pawn, Pawn) and y2 == last_line:
+                    pawn = Queen(pawn.color)
                 self.board[y2][x2] = pawn
                 self.board[y1][x1] = None
 
