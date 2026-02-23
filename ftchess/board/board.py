@@ -110,6 +110,7 @@ class Board():
             else:
                 last_line: int = 7 if pawn.color == PawnColor.WHITE else 1
                 if isinstance(pawn, Pawn) and y2 == last_line:
+                    pos2 += "q"
                     match pos2[2]:
                         case "q":
                             pawn = Queen(pawn.color)
